@@ -58,16 +58,19 @@ Before running or building the app, make sure your development environment meets
 
 ## 🚀 Step-by-Step Installation & Setup
 
-1. **Verify your Flutter installation**:
+Follow these steps to set up the codebase on your local machine:
+
+1. **Clone the Git Repository**:
+   ```bash
+   git clone https://github.com/Okramjimmy/constructionHub.git
+   cd constructionHub
+   ```
+
+2. **Verify your Flutter installation**:
    ```bash
    flutter doctor
    ```
    Ensure that the target platforms (Android, iOS, or Web) show green checkmarks.
-
-2. **Navigate to the project root**:
-   ```bash
-   cd /Users/okrammeitei/Projects/ConstructionHub
-   ```
 
 3. **Fetch project dependencies**:
    ```bash
@@ -83,64 +86,70 @@ Before running or building the app, make sure your development environment meets
 
 ## 💻 Running the Application
 
-### 1. Running on Web (Google Chrome)
-The web platform is ideal for quick testing and does not require emulator configurations.
+### 1. Running on macOS Desktop (Native — HIGHLY RECOMMENDED)
+Because the backend uses HTTP-only `erp_session` cookies with `SameSite=Lax` guidelines, modern browser engines may restrict cross-origin cookie storage when running the web client locally on `localhost:8080` against the remote backend IP. 
+Running as a **native macOS Desktop app** completely bypasses all CORS, cookie, and SameSite blocks! It utilizes a local standalone persistent jar store (`PersistCookieJar` + `FileStorage`) which works instantly and flawlessly.
 ```bash
-# Run on Chrome
-flutter run -d chrome
-
-# Run on a specific port (e.g. 8080) for predictable local URLs
-flutter run -d chrome --web-port=8080
+# Run as a native macOS app
+flutter run -d macOS
 ```
 
-### 2. Running on Android
+### 2. Running on Web (Google Chrome)
+If you wish to test in Chrome, you must override Chrome's default cross-origin cookie security and SameSite engine during local dev:
+```bash
+# Run on Chrome with CORS & SameSite disabled
+flutter run -d chrome \
+  --web-browser-flag="--disable-web-security" \
+  --web-browser-flag="--disable-features=SameSiteByDefaultCookies,CookiesWithoutSameSiteMustBeSecure"
+```
 
-#### Using an Emulator (Virtual Device)
-1. Open Android Studio, navigate to **Device Manager**, and start your preferred Android Virtual Device (AVD).
+### 3. Running on iOS Simulator (macOS Only)
+1. Start the iOS Simulator:
+   ```bash
+   open -a Simulator
+   ```
+2. Once the simulator starts, run the app:
+   ```bash
+   flutter run -d iphonesimulator
+   ```
+
+### 4. Running on Android Emulator
+1. Start your Android Emulator via Android Studio Device Manager.
 2. Verify Flutter detects the running emulator:
    ```bash
    flutter devices
    ```
 3. Run the app:
    ```bash
-   flutter run -d <emulator_id> # or simply 'flutter run' if only one device is active
-   ```
-
-#### Using a Physical Android Device
-1. Enable **Developer Options** on your Android device (Go to `Settings > About phone` and tap `Build number` 7 times).
-2. Enable **USB Debugging** in Developer Options.
-3. Connect the phone to your computer via USB cable.
-4. Run:
-   ```bash
    flutter run
    ```
 
 ---
 
-### 3. Running on iOS (macOS Only)
+## 🔄 Refreshing & Applying New Updates
 
-#### Using a Simulator (Virtual Device)
-1. Start the simulator from your terminal:
-   ```bash
-   open -a Simulator
-   ```
-2. Once the simulator boots, run:
-   ```bash
-   flutter run
-   ```
+When a new update is released or modifications are pushed to the remote repository, refresh your environment with the following checklist to ensure zero state mismatches:
 
-#### Using a Physical iOS Device
-1. Connect your iPhone/iPad to your Mac via USB.
-2. On your iPhone, enable **Developer Mode** (`Settings > Privacy & Security > Developer Mode` - requires device restart).
-3. Open the iOS project in Xcode to configure code signing:
-   ```bash
-   open ios/Runner.xcworkspace
-   ```
-4. In Xcode, select the `Runner` target on the left side, go to the **Signing & Capabilities** tab, and select your Apple Developer account/team.
-5. In your terminal, run:
-   ```bash
-   flutter run -d <device_id>
-   ```
+### 1. Fetch & Pull New Code
+```bash
+# Pull the latest changes from the main branch
+git pull origin main
+```
+
+### 2. Flush Caches & Rebuild Dependencies
+If libraries or assets were changed in `pubspec.yaml`, clean the cache and fetch fresh packages:
+```bash
+# Clear all build caches and temporary packages
+flutter clean
+
+# Re-fetch all clean Dart dependencies
+flutter pub get
+```
+
+### 3. Hot Session Keys during Development
+When running a live debug session in your terminal, use the keyboard shortcuts to sync changes:
+* **`r` (Hot Reload)**: Injects updated source code files directly into the VM. The app state is fully preserved, letting you see style or layout tweaks instantly (takes less than 1 second).
+* **`R` (Hot Restart)**: Rebuilds the widgets from scratch and runs `main()`. Use this when adding new providers, changing routes, or initializing static configs.
 
 ---
 
@@ -156,9 +165,9 @@ flutter build web --release
 * **Deployment**: You can host the contents of `build/web/` directly on Firebase Hosting, Netlify, Vercel, AWS S3, or any static web host.
 
 ### 2. Compiling for Android
-Generates release builds in the `build/app/outputs/` directory.
+Generates release builds in the `build/app/outputs/`.
 
-* **Generate an APK (for testing & direct installation)**:
+* **Generate an APK (for direct testing & manual installation)**:
   ```bash
   flutter build apk --release
   ```
