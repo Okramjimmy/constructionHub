@@ -1,0 +1,54 @@
+name: construction_hub
+description: ConstructionHub — Enterprise Flutter construction quality control and site inspection platform.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.5.1
+
+  # Navigation
+  go_router: ^13.2.4
+
+  # HTTP / API
+  dio: ^5.4.3+1
+  cookie_jar: ^4.0.8
+  dio_cookie_manager: ^3.1.1
+
+  # Typography
+  google_fonts: ^6.2.1
+
+  # Image picker (camera + gallery)
+  image_picker: ^1.1.0
+
+  # Secure token storage
+  flutter_secure_storage: ^9.0.0
+
+  # Offline storage (checklist drafts)
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # Path provider
+  path_provider: ^2.1.3
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.9
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+  # Fonts are served via google_fonts package (no local font files needed)
